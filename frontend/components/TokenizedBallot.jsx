@@ -302,14 +302,15 @@ function RequestTokens() {
 	const [txData, setTxData] = useState(null);
 	const [isLoading, setLoading] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [form, setForm] = useState({
+        address: '',
+        amount: ''
+      });
     
-	// if(txData) return (
-	// 	<div>
-	// 		<p>Transaction completed</p>
-	// 		<a href={"https://goerli.etherscan.io/tx/" + txData.hash} target="_blank">{txData.hash}</a>
-	// 	</div>
-	// )
-	// if(isLoading) return <p>Requesting tokens to be minted...</p>;
+    const handleFormFieldChange = (fieldName, e) => {
+    setForm({ ...form, [fieldName]: e.target.value })
+    }
+    console.log("mad", form);
 	return (
 		<div>
 			<button className="m-2 bg-red-900 text-white py-10 px-10 w-56 rounded text-xl hover:bg-red-800"
@@ -333,8 +334,10 @@ function RequestTokens() {
                     : null }
                     {isLoading ? <p>Requesting tokens to be minted...</p> : null}   
                 </div><br></br>
-                <input type="text" placeholder="put address" className="mb-3 w-full border py-2 px-3" />
-                <input type="text" placeholder="put address" className="mb-3 w-full border py-2 px-3" />
+                <input type="text" placeholder="put address" className="mb-3 w-full border py-2 px-3" value={form.address}
+                    onChange={(e) => handleFormFieldChange('address', e)} />
+                <input type="number" step={1} placeholder="put amount" className="mb-3 w-full border py-2 px-3" value={form.amount}
+                    onChange={(e) => handleFormFieldChange('amount', e)}/>
                 <button className="mx-1 bg-blue-900 p-2 rounded text-white px-4"
                  onClick={() => {requestTokens(signer, "signature", setLoading, setTxData)}}>
                  Show
