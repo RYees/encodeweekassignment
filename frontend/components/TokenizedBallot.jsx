@@ -303,27 +303,42 @@ function RequestTokens() {
 	const [isLoading, setLoading] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     
-	if(txData) return (
-		<div>
-			<p>Transaction completed</p>
-			<a href={"https://goerli.etherscan.io/tx/" + txData.hash} target="_blank">{txData.hash}</a>
-		</div>
-	)
-	if(isLoading) return <p>Requesting tokens to be minted...</p>;
+	// if(txData) return (
+	// 	<div>
+	// 		<p>Transaction completed</p>
+	// 		<a href={"https://goerli.etherscan.io/tx/" + txData.hash} target="_blank">{txData.hash}</a>
+	// 	</div>
+	// )
+	// if(isLoading) return <p>Requesting tokens to be minted...</p>;
 	return (
 		<div>
 			<button className="m-2 bg-red-900 text-white py-10 px-10 w-56 rounded text-xl hover:bg-red-800"
-             onClick={() => {requestTokens(signer, "signature", setLoading, setTxData)}}>
+                onClick={() => setIsOpen(true)}
+            >
                 RequestToken
             </button>
             {/* onClick={() => setIsOpen(true)} */}
             <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
-                <div className="flex justify-end -mt-5 w-96">
-                    <button className="hover:text-red-600 hover:font-bold" onClick={() => setIsOpen(false)}>Close</button>
+                <div className="flex justify-end -mt-5 w-96 ml-32">
+                    <button className="hover:text-red-600 hover:font-bold"
+                    onClick={() => setIsOpen(false)}>
+                        Close
+                    </button>
                 </div> <br></br>
-                <div>Eth Value:</div><br></br>
+                <div>
+                    {txData ? 
+                        <div>
+                            <a href={"https://goerli.etherscan.io/tx/" + txData.hash} target="_blank">{txData.hash}</a>
+                        </div>
+                    : null }
+                    {isLoading ? <p>Requesting tokens to be minted...</p> : null}   
+                </div><br></br>
                 <input type="text" placeholder="put address" className="mb-3 w-full border py-2 px-3" />
-                <button className="mx-1 bg-blue-900 p-2 rounded text-white px-4">Show</button>
+                <input type="text" placeholder="put address" className="mb-3 w-full border py-2 px-3" />
+                <button className="mx-1 bg-blue-900 p-2 rounded text-white px-4"
+                 onClick={() => {requestTokens(signer, "signature", setLoading, setTxData)}}>
+                 Show
+                </button>
             </Modal>
 		</div>
 	)
